@@ -5,3 +5,7 @@
   width: 50%;
   border-radius: 17px
 }
+
+label {
+  float: none;
+}
