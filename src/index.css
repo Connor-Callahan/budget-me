@@ -1,11 +1,43 @@
 
-#calculator {
-  border: 2px solid black;
-  padding: 3%;
-  width: 50%;
-  border-radius: 17px
+h1 {
+  font-family: 'Roboto', sans-serif;
 }
 
-label {
-  float: none;
+#calculator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 18px solid rgba(76, 175, 80, 0.3);
+  padding: 1%;
+  width: 50%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+input {
+  font-size: 2.6vh;
+  background: transparent;
+  margin-left: 2%;
+  margin-right: 2%;
+  height: 30px;
+  border: 0;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
+
+#expenses {
+}
+
+.expense-input {
+  margin-bottom: 1%;
+  background-color: rgba(76, 175, 80, 0.3);
+  padding: 2%;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
