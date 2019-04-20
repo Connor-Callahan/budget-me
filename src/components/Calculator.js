@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Expenses from './Expenses'
 
 class Calculator extends PureComponent {
 
@@ -70,39 +71,7 @@ class Calculator extends PureComponent {
           <label> Estimated Tax : </label>
             % <label> {this.state.tax}</label>
         </form>
-            <br></br>
-        <form id="expenses" onChange={this.handleChange}>
-        <div className="expense-input">
-        <label> Housing $</label>
-          <input id="housing" type="number"></input>
-            <br></br>
-        </div>
-        <div className="expense-input">
-        <label> Utilities $</label>
-          <input id="utilities" type="number"></input>
-          <button className= "expand-expenses">➕</button>
-            <br></br>
-        </div>
-        <div className="expense-input">
-        <label> Insurance $</label>
-          <input id="insurance" type="number"></input>
-            <br></br>
-        </div>
-        <div className="expense-input">
-        <label> Transportation $</label>
-          <input id="transportation" type="number"></input>
-            <br></br>
-        </div>
-        <div className="expense-input">
-        <label> Savings $</label>
-          <input id="savings" type="number"></input>
-            <br></br>
-        </div>
-        <div className="expense-input">
-        <label> Misc. $</label>
-          <input id="misc" type="number"></input>
-        </div>
-        </form>
+        <Expenses />
         <label> Discretionary Income Remaining: $ {this.state.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</label>
       </div>
     );
