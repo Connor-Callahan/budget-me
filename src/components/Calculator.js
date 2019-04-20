@@ -4,7 +4,7 @@ import Expenses from './Expenses'
 class Calculator extends PureComponent {
 
   state = {
-    income: 0,
+    income: null,
     net: 0,
     tax: 0,
     housing: 0,
@@ -43,15 +43,28 @@ class Calculator extends PureComponent {
     }
     this.setState({
         income: income,
-        tax: tax
+        tax: tax,
+        net: (value / 12).toFixed(2)
     })
     this.renderFormChange((value / 12).toFixed(2))
   }
 
   handleChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value
-    })
+    if(this.state.income != null) {
+      this.setState({
+        [e.target.id]: e.target.value
+      })
+    } else {
+      alert('Please enter an income!')
+    }
+    let value = null
+    if(this.state[e.target.id] < e.target.value) {
+      value = this.state.net - this.state[e.target.id]
+    } else {
+      value = this.state.net + this.state[e.target.id]
+    }
+    console.log(value)
+    this.renderFormChange(value)
   }
 
   renderFormChange = (value) => {
@@ -61,7 +74,6 @@ class Calculator extends PureComponent {
   }
 
   render() {
-    console.log(this.state.housing)
     return (
       <div id="calculator">
       <h1> Monthly Budget Calculator </h1>
@@ -71,7 +83,7 @@ class Calculator extends PureComponent {
           <label> Estimated Tax : </label>
             % <label> {this.state.tax}</label>
         </form>
-        <Expenses />
+        <Expenses handleChange={this.handleChange}/>
         <label> Discretionary Income Remaining: $ {this.state.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</label>
       </div>
     );
