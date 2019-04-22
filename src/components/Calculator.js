@@ -5,14 +5,16 @@ class Calculator extends PureComponent {
 
   state = {
     income: null,
-    net: 0,
     tax: 0,
-    housing: 0,
-    transportation: 0,
-    utilities: 0,
-    insurance: 0,
-    savings: 0,
-    balance: 0
+    net: 0,
+    balance: 0,
+    expenses: [
+      {expense: 'housing', cost: 0},
+      {expense: 'transportation', cost: 0},
+      {expense: 'utilities', cost: 0},
+      {expense: 'insurance', cost: 0},
+      {expense: 'savings', cost: 0},
+    ]
   }
 
   handleIncome = (e) => {
@@ -44,32 +46,50 @@ class Calculator extends PureComponent {
     this.setState({
         income: income,
         tax: tax,
-        net: (value / 12).toFixed(2)
+        net: (value / 12).toFixed(2),
+        balance: (value / 12).toFixed(2)
     })
-    this.renderFormChange((value / 12).toFixed(2))
   }
 
   handleChange = (e) => {
     if(this.state.income != null) {
+      let index = this.state.expenses.findIndex(x => x.expense === e.target.id)
+      if (index === -1) {
+        console.log('error')
+      } else {
       this.setState({
-        [e.target.id]: e.target.value
-      })
-    } else {
+      expenses: [
+         ...this.state.expenses.slice(0,index),
+           Object.assign({}, this.state.expenses[index], {cost: parseInt(e.target.value)}),
+         ...this.state.expenses.slice(index+1)
+      ]
+    });
+    }
+    this.renderBalance(e.target.value, e.target.id)
+  }else {
       alert('Please enter an income!')
     }
-    let value = null
-    if(this.state[e.target.id] < e.target.value) {
-      value = this.state.net - this.state[e.target.id]
-    } else {
-      value = this.state.net + this.state[e.target.id]
-    }
-    console.log(value)
-    this.renderFormChange(value)
   }
 
-  renderFormChange = (value) => {
+  renderBalance = (value, id) => {
+    let total = 0
+    let remainder = 0
+    const filtered = this.state.expenses.filter(x => x.expense != id)
+    for (var i = 0, _len = filtered.length; i < _len; i++ ) {
+        total += filtered[i].cost
+    }
+    let balance = this.state.net - (parseInt(total) + parseInt(value))
+
+    if(isNaN(balance) && total === 0) {
+      remainder = 0
+    } else if(isNaN(balance) && total > 0) {
+      remainder = total
+    } else {
+      remainder = balance
+    }
+
     this.setState({
-      balance: value
+      balance: remainder
     })
   }
 
@@ -78,13 +98,13 @@ class Calculator extends PureComponent {
       <div id="calculator">
       <h1> Monthly Budget Calculator </h1>
         <form id="income" onChange={this.handleIncome}>
-        <label> Net Monthly Income </label>
+        <label> Gross Monthly Income </label>
         $<input id="income" type="number" ></input>
           <label> Estimated Tax : </label>
             % <label> {this.state.tax}</label>
         </form>
         <Expenses handleChange={this.handleChange}/>
-        <label> Discretionary Income Remaining: $ {this.state.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</label>
+        <label> Income Remaining: $ {this.state.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</label><label> Net Income : $ {this.state.net.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</label>
       </div>
     );
   }
