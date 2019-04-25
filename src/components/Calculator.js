@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Expenses from './Expenses'
 
-class Calculator extends PureComponent {
+class Calculator extends Component {
 
   state = {
     income: null,
